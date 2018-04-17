@@ -52,7 +52,7 @@
   (reset! read-buffer []))
 
 (defn poll-for-test-msgs []
-  (let [kafka-consumer (-> (merge (get-consumer-config-from-env)
+  (let [consumer (-> (merge (get-consumer-config-from-env)
                                   ncc/string-properties-config
                                   test-consumer-config)
                            (ncc/consumer-from "test"))
@@ -77,7 +77,7 @@
 
   (testing "loading from file and posting to kafka"
    (let [_ (poll-for-test-msgs)]
-     (is (= (do (post-test-msgs-from-file)
+     (is (= (do (post-test-msgs-from-csv-file)
                 3)
           (count read-buffer))))
 
