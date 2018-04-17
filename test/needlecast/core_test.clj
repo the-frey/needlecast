@@ -20,7 +20,7 @@
   (let [kafka-producer (-> (merge (get-producer-config-from-env)
                                   ncp/string-properties-config)
                            ncp/producer-from)
-        xfrm-fn (comp (partial ncp/send-msg kafka-producer "test")
+        xfrm-fn (comp (partial ncp/send! kafka-producer "test")
                       json/write-value-as-string
                       (partial zipmap fixture-header-row))]
     (do
@@ -41,7 +41,7 @@
                :email "acerimmer@example.com"}]]
     (do
       (map #(->> (json/write-value-as-string %)
-                 (ncp/send-msg kafka-producer "test"))
+                 (ncp/send! kafka-producer "test"))
            msgs)
       (.close kafka-producer))))
 
