@@ -1,6 +1,7 @@
 (ns needlecast.io
   (:require [jsonista.core :as json]
-            [clojure.data.csv :as csv]))
+            [clojure.data.csv :as csv]
+            [clojure.java.io :as io]))
 
 (defn csv-data->maps [csv-data]
   (map zipmap
