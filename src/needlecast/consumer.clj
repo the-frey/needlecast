@@ -26,4 +26,10 @@
 
 (defn consumer-from [properties topic]
   (doto (KafkaConsumer. properties)
-        (.subscribe topic)))
+        (.subscribe [topic])))
+
+(defn lazy-poll! [consumer]
+  "Returns a lazy seq of messages from consumer"
+  (lazy-seq
+   (let [records (.poll consumer 100)]
+     (concat records (lazy-poll! consumer)))))

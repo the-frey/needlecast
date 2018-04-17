@@ -24,7 +24,7 @@
                       json/write-value-as-string
                       (partial zipmap fixture-header-row))]
     (do
-      (csv-file->xfrm test-file-location xfrm-fn)
+      (ncio/csv-file->xfrm test-file-location xfrm-fn)
       (.close kafka-producer))))
 
 (defn post-test-msgs []
@@ -71,7 +71,7 @@
 
   (testing "loading from file"
     (= 3
-       (-> (csv-file->xfrm test-file-location
+       (-> (ncio/csv-file->xfrm test-file-location
                            (partial zipmap fixture-header-row))
             count)))
 
