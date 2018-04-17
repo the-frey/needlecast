@@ -16,7 +16,7 @@
 
 (def fixture-header-row ["first_name" "last_name" "balance" "email"])
 
-(defn post-test-msgs-from-csv-file
+(defn post-test-msgs-from-csv-file []
   (let [kafka-producer (-> (merge (get-producer-config-from-env)
                                   ncp/string-properties-config)
                            ncp/producer-from)
@@ -27,7 +27,7 @@
       (csv-file->xfrm test-file-location xfrm-fn)
       (.close kafka-producer))))
 
-(defn post-test-msgs
+(defn post-test-msgs []
   (let [kafka-producer (-> (merge (get-producer-config-from-env)
                                   ncp/string-properties-config)
                            ncp/producer-from)
@@ -51,7 +51,7 @@
   (f)
   (reset! read-buffer []))
 
-(defn poll-for-test-msgs
+(defn poll-for-test-msgs []
   (let [kafka-consumer (-> (merge (get-consumer-config-from-env)
                                   ncc/string-properties-config
                                   test-consumer-config)
