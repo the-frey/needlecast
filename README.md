@@ -6,6 +6,8 @@ A micro library for working with Kafka from Clojure.
 
 I've been hacking around with this for a while and thought it was about time I put it on GitHub as it's a pain to be emailing myself Gists and snippets.
 
+This is a work-in-progress and you probably shouldn't use it right now.
+
 ## Usage
 
 This project is on Clojars.
