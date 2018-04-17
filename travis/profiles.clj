@@ -1,0 +1,1 @@
+{:test {:env {:producer-config {"bootstrap.servers" "localhost:9092"}}}}
