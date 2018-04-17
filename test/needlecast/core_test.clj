@@ -24,7 +24,7 @@
                       json/write-value-as-string
                       (partial zipmap fixture-header-row))]
     (do
-      (ncio/csv-file->xfrm test-file-location xfrm-fn)
+      (ncio/csv-file->xfrm! test-file-location xfrm-fn)
       (.close kafka-producer))))
 
 (defn post-test-msgs []
@@ -67,24 +67,25 @@
           (.commitSync consumer))))
     ))
 
-(deftest lazy-test-json-post-spec
-
+(deftest io-spec
   (testing "loading from file"
     (= 3
        (-> (ncio/csv-file->xfrm test-file-location
                            (partial zipmap fixture-header-row))
-            count)))
+            count))))
 
+(deftest loading-csv-posting-json-spec
   (testing "loading from file and posting to kafka"
    (let [_ (poll-for-test-msgs)]
      (is (= (do (post-test-msgs-from-csv-file)
                 3)
-          (count read-buffer))))
+          (count read-buffer))))))
 
+(deftest posting-json-spec
   (testing "posting json to kafka"
    (let [_ (poll-for-test-msgs)]
      (is (= (do (post-test-msgs)
                 3)
-          (count read-buffer)))))))
+          (count read-buffer))))))
 
 (use-fixtures :each reset-read-buffer)
