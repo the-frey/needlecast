@@ -12,7 +12,7 @@
   {"key.serializer" ByteArraySerializer
    "value.serializer" ByteArraySerializer})
 
-(defn send [kafka-producer topic msg]
+(defn send-msg [kafka-producer topic msg]
   (.send kafka-producer (ProducerRecord. topic msg)))
 
 (defn producer-from [properties]

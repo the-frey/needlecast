@@ -2,7 +2,7 @@
   (:require [taoensso.nippy :as nippy]
             [jsonista.core :as json])
   (:import [org.apache.kafka.common.serialization ByteArrayDeserializer StringDeserializer]
-           [org.apache.kafka.clients.producer KafkaConsumer]))
+           [org.apache.kafka.clients.consumer KafkaConsumer]))
 
 (def string-properties-config
   {"key.deserializer" StringDeserializer
