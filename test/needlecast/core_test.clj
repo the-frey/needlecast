@@ -53,16 +53,16 @@
 
 (defn poll-for-test-msgs []
   (let [consumer (-> (merge (get-consumer-config-from-env)
-                                  ncc/string-properties-config
-                                  test-consumer-config)
-                           (ncc/consumer-from "test"))
+                            ncc/string-properties-config
+                            test-consumer-config)
+                     (ncc/consumer-from ["test"]))
         min-batch-size 3]
     (when (< (count read-buffer)
              min-batch-size)
       (let [records (.poll consumer 100)]
         (swap! read-buffer into records)
         (if-not (>= (count read-buffer)
-                min-batch-size)
+                    min-batch-size)
           (recur)
           (.commitSync consumer))))
     ))
@@ -71,21 +71,21 @@
   (testing "loading from file"
     (= 3
        (-> (ncio/csv-file->xfrm test-file-location
-                           (partial zipmap fixture-header-row))
-            count))))
+                                (partial zipmap fixture-header-row))
+           count))))
 
 (deftest loading-csv-posting-json-spec
   (testing "loading from file and posting to kafka"
-   (let [_ (poll-for-test-msgs)]
+    (let [_ (poll-for-test-msgs)]
      (is (= (do (post-test-msgs-from-csv-file)
                 3)
-          (count read-buffer))))))
+            (count read-buffer))))))
 
 (deftest posting-json-spec
   (testing "posting json to kafka"
    (let [_ (poll-for-test-msgs)]
      (is (= (do (post-test-msgs)
                 3)
-          (count read-buffer))))))
+            (count read-buffer))))))
 
 (use-fixtures :each reset-read-buffer)

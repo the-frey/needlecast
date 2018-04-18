@@ -9,4 +9,5 @@
                  [environ "1.1.0"]
                  [com.taoensso/nippy "2.13.0"]
                  [metosin/jsonista "0.1.1"]
-                 [org.clojure/data.csv "0.1.4"]])
+                 [org.clojure/data.csv "0.1.4"]]
+  :plugins [[lein-environ "1.1.0"]])

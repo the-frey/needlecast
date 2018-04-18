@@ -24,9 +24,9 @@
   (-> (get-record-value record)
       nippy/thaw))
 
-(defn consumer-from [properties topic]
+(defn consumer-from [properties topics]
   (doto (KafkaConsumer. properties)
-        (.subscribe [topic])))
+    (.subscribe topics)))
 
 (defn lazy-poll! [consumer]
   "Returns a lazy seq of messages from consumer"

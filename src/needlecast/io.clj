@@ -8,7 +8,7 @@
        (->> (first csv-data)
             (map keyword)
             repeat)
-    (rest csv-data)))
+       (rest csv-data)))
 
 (defn csv-file->maps [file-path]
   "If you prefer to chain together lots of map operations..."
