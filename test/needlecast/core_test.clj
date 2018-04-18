@@ -57,13 +57,13 @@
                             test-consumer-config)
                      (ncc/consumer-from ["test"]))
         min-batch-size 3]
-    (when (< (count read-buffer)
+    (while (< (count read-buffer)
              min-batch-size)
       (let [records (.poll consumer 100)]
         (swap! read-buffer into records)
         (if-not (>= (count read-buffer)
                     min-batch-size)
-          (recur)
+          true ;; we're done
           (.commitSync consumer))))
     ))
 
