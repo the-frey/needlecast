@@ -9,10 +9,10 @@ before_install:
   - sudo ./travis/bootstrap.sh
   - sudo ./travis/download_kafka.sh
   - sudo ./travis/run_kafka.sh
-  - sleep 15 # make sure kafka and zk have started
+  - sleep 20 # make sure kafka and zk have started
   - sudo ./travis/create_test_kafka_topic.sh
 
-script: travis_retry env BOOTSTRAP_SERVERS="localhost:9092" JAVA_HOME=/usr/lib/jvm/java-8-oracle/bin/java lein test
+script: travis_retry env JAVA_HOME=/usr/lib/jvm/java-8-oracle/bin/java lein test
 
 notifications:
   email:
