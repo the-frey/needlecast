@@ -56,16 +56,17 @@
                             ncc/string-properties-config
                             test-consumer-config)
                      (ncc/consumer-from ["test"]))]
-    (let [records (.poll consumer 1000)]
-      (do (swap! read-buffer into records)
-          (.commitSync consumer)))))
+    (let [records (.poll consumer 10000)]
+      (swap! read-buffer into records)
+      ;;(.commitSync consumer)
+      )))
 
-(deftest io-spec
-  (testing "loading from file"
-    (= 3
-       (-> (ncio/csv-file->xfrm test-file-location
-                                (partial zipmap fixture-header-row))
-           count))))
+(comment (deftest io-spec
+   (testing "loading from file"
+     (= 3
+        (-> (ncio/csv-file->xfrm test-file-location
+                                 (partial zipmap fixture-header-row))
+            count)))))
 
 (deftest loading-csv-posting-json-spec
   (testing "loading from file and posting to kafka"
@@ -75,12 +76,12 @@
             (do (poll-for-test-msgs)
                 (count @read-buffer)))))))
 
-(deftest posting-json-spec
-  (testing "posting json to kafka"
-   (let [_ true]
-     (is (= (do (post-test-msgs)
-                3)
-            (do (poll-for-test-msgs)
-                (count @read-buffer)))))))
+(comment (deftest posting-json-spec
+   (testing "posting json to kafka"
+     (let [_ true]
+       (is (= (do (post-test-msgs)
+                  3)
+              (do (poll-for-test-msgs)
+                  (count @read-buffer))))))))
 
 (use-fixtures :each reset-read-buffer)
