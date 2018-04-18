@@ -33,3 +33,9 @@
   (lazy-seq
    (let [records (.poll consumer 100)]
      (concat records (lazy-poll! consumer)))))
+
+(defn lazy-poll->xfrm! [consumer xfrm-fn]
+  "Returns a lazy seq of messages from consumer"
+  (lazy-seq
+   (let [records (.poll consumer 100)]
+     (concat records (lazy-poll! consumer xfrm-fn)))))

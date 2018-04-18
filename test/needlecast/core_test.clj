@@ -55,17 +55,10 @@
   (let [consumer (-> (merge (get-consumer-config-from-env)
                             ncc/string-properties-config
                             test-consumer-config)
-                     (ncc/consumer-from ["test"]))
-        min-batch-size 3]
-    (while (< (count @read-buffer)
-             min-batch-size)
-      (let [records (.poll consumer 100)]
-        (swap! read-buffer into records)
-        (if-not (>= (count @read-buffer)
-                    min-batch-size)
-          true ;; we're done
-          (.commitSync consumer))))
-    ))
+                     (ncc/consumer-from ["test"]))]
+    (let [records (.poll consumer 1000)]
+      (do (swap! read-buffer into records)
+          (.commitSync consumer)))))
 
 (deftest io-spec
   (testing "loading from file"
@@ -76,16 +69,18 @@
 
 (deftest loading-csv-posting-json-spec
   (testing "loading from file and posting to kafka"
-    (let [_ (poll-for-test-msgs)]
+    (let [_ true]
      (is (= (do (post-test-msgs-from-csv-file)
                 3)
-            (count @read-buffer))))))
+            (do (poll-for-test-msgs)
+                (count @read-buffer)))))))
 
 (deftest posting-json-spec
   (testing "posting json to kafka"
-   (let [_ (poll-for-test-msgs)]
+   (let [_ true]
      (is (= (do (post-test-msgs)
                 3)
-            (count @read-buffer))))))
+            (do (poll-for-test-msgs)
+                (count @read-buffer)))))))
 
 (use-fixtures :each reset-read-buffer)
